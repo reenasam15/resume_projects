@@ -9,7 +9,7 @@ select
     cast(updated_at as timestamp) as updated_at,
     {{ audit_columns() }}
 from {{ source('raw_streaming', 'playback_events') }}
-qualify row_number() over (partition by event_id order by cast(updated_at as timestamp) desc) = 1
 {% if is_incremental() %}
-  and cast(updated_at as timestamp) >= (select coalesce(max(updated_at), '1900-01-01'::timestamp) from {{ this }})
+where cast(updated_at as timestamp) >= (select coalesce(max(updated_at), '1900-01-01'::timestamp) from {{ this }})
 {% endif %}
+qualify row_number() over (partition by event_id order by cast(updated_at as timestamp) desc) = 1
