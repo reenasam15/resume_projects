@@ -1,0 +1,9 @@
+payment_id,subscription_id,payment_ts,amount_usd,currency,payment_status,updated_at
+pay1,s1,2025-07-10 00:05:00,7.99,USD,succeeded,2025-07-10 00:05:02
+pay2,s2,2025-05-02 00:05:00,7.99,USD,failed,2025-05-02 00:05:03
+pay3,s3,2025-07-01 00:05:00,13.99,USD,succeeded,2025-07-01 00:05:03
+pay4,s4,2025-07-01 00:05:00,13.99,USD,succeeded,2025-07-01 00:05:03
+pay5,s5,2025-07-05 00:05:00,18.99,USD,succeeded,2025-07-05 00:05:03
+pay6,s6,2025-06-01 00:05:00,-7.99,USD,refund,2025-06-01 00:05:03
+pay7,s8,2025-05-18 10:05:00,9.99,USD,succeeded,2025-05-18 10:05:03
+pay8,s11,2025-06-02 08:00:00,149.99,USD,succeeded,2025-06-02 08:00:05

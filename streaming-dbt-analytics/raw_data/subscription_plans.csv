@@ -1,0 +1,6 @@
+plan_id,plan_name,billing_cycle,price_usd,ad_tier,is_active,updated_at
+p_basic,Basic,monthly,7.99,true,true,2025-06-01 00:00:00
+p_std,Standard,monthly,13.99,false,true,2025-06-01 00:00:00
+p_prem,Premium,monthly,18.99,false,true,2025-06-01 00:00:00
+p_annual,Annual Plus,annual,149.99,false,true,2025-06-01 00:00:00
+p_legacy,Legacy,monthly,9.99,true,false,2025-01-01 00:00:00

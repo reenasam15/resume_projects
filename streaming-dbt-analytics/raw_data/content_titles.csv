@@ -1,0 +1,7 @@
+title_id,title_name,content_type,release_year,runtime_minutes,maturity_rating,is_active,updated_at
+t1,Galactic Drift,movie,2023,124,PG-13,true,2025-07-01 00:00:00
+t2,Kitchen Zero,series,2024,45,TV-14,true,2025-07-01 00:00:00
+t3,City of Echoes,series,2022,52,TV-MA,true,2025-07-01 00:00:00
+t4,Deep Lake,movie,2021,98,PG,true,2025-07-01 00:00:00
+t5,Retro Bots,series,2020,22,TV-Y7,true,2025-07-01 00:00:00
+t6,Paper Skies,movie,2019,110,PG-13,false,2024-12-01 00:00:00

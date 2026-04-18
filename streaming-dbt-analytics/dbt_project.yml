@@ -1,0 +1,50 @@
+name: 'streaming_dbt_analytics'
+version: '1.0.0'
+config-version: 2
+
+profile: 'streaming_dbt_analytics'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds", "raw_data"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+docs-paths: ["docs"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  streaming_dbt_analytics:
+    +materialized: view
+    staging:
+      +schema: staging
+    intermediate:
+      +schema: intermediate
+    marts:
+      +schema: marts
+      core:
+        +materialized: table
+      product:
+        +materialized: table
+      finance:
+        +materialized: table
+      marketing:
+        +materialized: table
+
+seeds:
+  streaming_dbt_analytics:
+    +quote_columns: false
+    raw_data:
+      +schema: raw
+    seeds:
+      +schema: seed
+
+snapshots:
+  streaming_dbt_analytics:
+    +target_schema: snapshots
+    +strategy: timestamp
+    +updated_at: updated_at

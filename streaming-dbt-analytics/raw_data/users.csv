@@ -1,0 +1,12 @@
+user_id,email,country_code,account_status,signup_at,updated_at
+u1,alex@example.com,US,ACTIVE,2025-01-10 09:00:00,2025-07-10 12:00:00
+u2,bri@example.com,us,active,2025-02-02 10:00:00,2025-06-15 15:00:00
+u3,chen@example.com,CA,paused,2025-02-20 11:00:00,2025-06-10 14:00:00
+u4,dia@example.com,GB,ACTIVE,2025-03-05 12:00:00,2025-07-01 08:00:00
+u5,eli@example.com,,cancelled,2025-03-11 12:30:00,2025-06-30 16:00:00
+u5,eli@example.com,,cancelled,2025-03-11 12:30:00,2025-07-02 17:00:00
+u6,farah@example.com,IN,SUSPENDED,2025-04-01 07:00:00,2025-07-05 10:00:00
+u7,gabe@example.com,BR,unknown,2025-04-18 09:30:00,2025-07-06 10:00:00
+u8,hana@example.com,US,ACTIVE,2025-05-22 10:00:00,2025-07-07 10:30:00
+u9,ivan@example.com,DE,ACTIVE,2025-05-25 19:00:00,2025-07-08 12:00:00
+u10,jin@example.com,JP,ACTIVE,2025-06-02 07:45:00,2025-07-09 11:30:00

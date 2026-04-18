@@ -1,0 +1,6 @@
+device_type_raw,device_category
+smart_tv,connected_tv
+mobile,mobile
+tablet,mobile
+web,web
+console,connected_tv

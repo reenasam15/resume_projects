@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+target/
+logs/
+dbt_packages/
+.duckdb/
+*.duckdb
+.DS_Store
