@@ -1,0 +1,6 @@
+impression_id,session_id,user_id,title_id,impression_ts,ad_network,updated_at
+imp1,sess1,u1,t1,2025-07-08 20:10:00,adflow,2025-07-08 20:10:01
+imp2,sess2,u1,t5,2025-07-09 18:05:00,adflow,2025-07-09 18:05:02
+imp3,sess3,u2,t2,2025-07-09 19:12:00,sponsorx,2025-07-09 19:12:02
+imp4,sess4,u3,t3,2025-06-29 20:20:00,adflow,2025-07-03 00:00:00
+imp5,sess6,u8,t2,2025-07-06 16:20:00,sponsorx,2025-07-06 16:20:02

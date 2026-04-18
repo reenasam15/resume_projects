@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: dim_users
+    columns:
+      - name: user_id
+        tests: [not_null, unique]
+  - name: dim_profiles
+    columns:
+      - name: profile_id
+        tests: [not_null, unique]
+  - name: dim_devices
+    columns:
+      - name: device_id
+        tests: [not_null, unique]
+  - name: dim_titles
+    columns:
+      - name: title_id
+        tests: [not_null, unique]
+  - name: dim_subscription_plans
+    columns:
+      - name: plan_id
+        tests: [not_null, unique]
+  - name: fct_playback_sessions
+    columns:
+      - name: session_id
+        tests: [not_null, unique]
+  - name: fct_watch_activity_daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [activity_date, user_id]
+  - name: fct_payments
+  - name: fct_ad_performance_daily
+  - name: fct_subscription_events
+  - name: mart_user_engagement
+  - name: mart_title_performance
+  - name: mart_subscription_health
+  - name: mart_revenue_monthly
+
+exposures:
+  - name: streaming_kpi_dashboard
+    type: dashboard
+    maturity: high
+    owner:
+      name: Analytics Engineering
+      email: analytics@example.com
+    depends_on:
+      - ref('mart_user_engagement')
+      - ref('mart_title_performance')
+      - ref('mart_subscription_health')
+      - ref('mart_revenue_monthly')
+    description: Primary dashboard for engagement, revenue, and churn KPIs.

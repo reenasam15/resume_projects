@@ -1,0 +1,10 @@
+device_id,user_id,device_type,os_name,country_code,first_seen_at,last_seen_at
+ d1,u1,smart_tv,Roku,US,2025-01-10 10:00:00,2025-07-10 12:00:00
+ d2,u1,mobile,iOS,US,2025-01-11 10:00:00,2025-07-08 09:00:00
+ d3,u2,Mobile,android,US,2025-02-02 11:00:00,2025-07-09 00:00:00
+ d4,u3,web,Chrome,CA,2025-02-21 08:00:00,2025-06-29 17:00:00
+ d5,u4,smart_tv,Tizen,GB,2025-03-06 13:00:00,2025-07-01 08:00:00
+ d6,u5,tablet,iPadOS,,2025-03-11 13:00:00,2025-06-10 20:00:00
+ d7,u8,console,Xbox,US,2025-05-23 10:00:00,2025-07-06 14:00:00
+ d8,u9,web,Firefox,DE,2025-05-26 09:00:00,2025-07-08 12:00:00
+ d9,u10,mobile,Android,JP,2025-06-03 07:00:00,2025-07-09 11:30:00

@@ -1,0 +1,3 @@
+cancellation_id,subscription_id,requested_at,effective_at,reason,updated_at
+c1,s2,2025-05-28 00:00:00,2025-06-01 00:00:00,too_expensive,2025-06-01 00:00:01
+c2,s6,2025-06-10 00:00:00,2025-06-15 00:00:00,technical_issues,2025-06-15 00:00:01

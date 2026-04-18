@@ -1,0 +1,6 @@
+plan_id,plan_family,ad_supported,max_profiles
+p_basic,basic,true,2
+p_std,standard,false,4
+p_prem,premium,false,6
+p_annual,annual,false,6
+p_legacy,legacy,true,2

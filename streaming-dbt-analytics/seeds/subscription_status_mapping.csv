@@ -1,0 +1,7 @@
+status_raw,status_normalized,is_active
+active,active,true
+paused,paused,false
+cancelled,cancelled,false
+expired,expired,false
+suspended,suspended,false
+unknown,unknown,false

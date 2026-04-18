@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: raw_streaming
+    description: Raw streaming platform data loaded via dbt seed from raw_data CSVs.
+    schema: raw
+    freshness:
+      warn_after: {count: 3, period: day}
+      error_after: {count: 7, period: day}
+    loaded_at_field: updated_at
+    tables:
+      - name: users
+        columns:
+          - name: user_id
+            tests: [not_null]
+      - name: subscription_plans
+      - name: subscriptions
+      - name: profiles
+      - name: devices
+      - name: content_titles
+      - name: title_genres
+      - name: playback_sessions
+      - name: playback_events
+      - name: ad_impressions
+      - name: ad_clicks
+      - name: payments
+      - name: cancellations

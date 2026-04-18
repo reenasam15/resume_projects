@@ -1,0 +1,11 @@
+version: 2
+models:
+  - name: int_session_event_summary
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [session_id, user_id]
+  - name: int_user_subscription_history
+  - name: int_title_daily_engagement
+  - name: int_payment_normalized
+  - name: int_churn_events
+  - name: int_daily_user_activity
