@@ -2,40 +2,506 @@ version: 2
 
 models:
   - name: dim_users
+    description: User dimension keyed by user_id.
     columns:
       - name: user_id
+        description: Unique identifier for a streaming account user.
         tests: [not_null, unique]
+
   - name: dim_profiles
+    description: Profile dimension keyed by profile_id.
     columns:
       - name: profile_id
+        description: Unique identifier for a profile under a user account.
         tests: [not_null, unique]
+
   - name: dim_devices
+    description: Device dimension keyed by device_id.
     columns:
       - name: device_id
+        description: Unique identifier for a playback device.
         tests: [not_null, unique]
+
   - name: dim_titles
+    description: Content title dimension keyed by title_id.
     columns:
       - name: title_id
+        description: Unique identifier for a content title.
         tests: [not_null, unique]
+
   - name: dim_subscription_plans
+    description: Subscription plan dimension keyed by plan_id.
     columns:
       - name: plan_id
+        description: Unique identifier for a subscription plan.
         tests: [not_null, unique]
+
   - name: fct_playback_sessions
+    description: Session-level fact table for playback sessions.
     columns:
       - name: session_id
+        description: Unique identifier for each playback session.
         tests: [not_null, unique]
+
   - name: fct_watch_activity_daily
+    description: Daily user-level watch activity fact table.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [activity_date, user_id]
+
   - name: fct_payments
+    description: Payment-level fact table for successfully captured transactions.
+    columns:
+      - name: payment_id
+        description: Unique payment identifier.
+      - name: subscription_id
+        description: Subscription identifier for the payment.
+      - name: user_id
+        description: User identifier for the payment.
+      - name: plan_id
+        description: Subscription plan identifier for the payment.
+      - name: payment_ts
+        description: Payment timestamp.
+      - name: net_amount_usd
+        description: Net payment amount in USD.
+      - name: payment_status
+        description: Payment status (for example captured, failed, refunded).
+
   - name: fct_ad_performance_daily
+    description: Daily ad performance fact table across campaigns and placements.
+    columns:
+      - name: activity_date
+        description: Activity date at day grain.
+      - name: ad_network
+        description: Ad network where impression and click activity occurred.
+      - name: impressions
+        description: Distinct ad impressions for the day/network.
+      - name: clicks
+        description: Distinct ad clicks for the day/network.
+      - name: ctr
+        description: Click-through rate, clicks divided by impressions.
+
   - name: fct_subscription_events
+    description: Subscription lifecycle fact table with starts, renewals, and plan changes.
+    columns:
+      - name: subscription_id
+        description: Unique subscription identifier.
+      - name: user_id
+        description: User identifier for the subscription.
+      - name: plan_id
+        description: Plan identifier associated with the subscription.
+      - name: status
+        description: Subscription status at event extraction time.
+      - name: subscription_start_at
+        description: Subscription start timestamp.
+      - name: subscription_end_at
+        description: Subscription end timestamp.
+      - name: cancellation_at
+        description: Cancellation timestamp, when applicable.
+      - name: plan_changed_flag
+        description: Boolean-like indicator for a plan change event.
+
   - name: mart_user_engagement
+    description: User engagement mart.
+    columns:
+      - name: user_id
+        description: Unique user identifier.
+      - name: active_days
+        description: Distinct active days for the user.
+      - name: total_sessions
+        description: Total playback sessions for the user.
+      - name: total_watch_minutes
+        description: Total watched minutes for the user.
+      - name: avg_watch_minutes_per_session
+        description: Average watched minutes per session for the user.
+
   - name: mart_title_performance
+    description: Title performance mart.
+    columns:
+      - name: title_id
+        description: Unique title identifier.
+      - name: title_name
+        description: Human-readable title name.
+      - name: total_sessions
+        description: Total playback sessions for the title.
+      - name: total_watch_minutes
+        description: Total watched minutes for the title.
+      - name: completed_sessions
+        description: Sessions completed to threshold.
+      - name: completion_rate
+        description: Completed sessions divided by total sessions.
+
   - name: mart_subscription_health
+    description: Monthly subscription health mart.
+    columns:
+      - name: month
+        description: Aggregation month.
+      - name: subscription_starts
+        description: Number of subscription starts.
+      - name: churns
+        description: Number of churn events.
+      - name: churn_rate
+        description: Churns divided by subscription starts.
+
   - name: mart_revenue_monthly
+    description: Monthly revenue mart.
+    columns:
+      - name: revenue_month
+        description: Revenue aggregation month.
+      - name: plan_id
+        description: Subscription plan identifier.
+      - name: revenue_usd
+        description: Total recognized net revenue in USD.
+
+semantic_models:
+  - name: sm_user_engagement
+    description: Semantic model for user engagement metrics.
+    model: ref('mart_user_engagement')
+    entities:
+      - name: user
+        type: primary
+        expr: user_id
+    dimensions:
+      - name: user_id
+        type: categorical
+        expr: user_id
+    measures:
+      - name: ue_active_days
+        description: Distinct active days per user.
+        agg: sum
+        expr: active_days
+      - name: ue_total_sessions
+        description: Total sessions across users.
+        agg: sum
+        expr: total_sessions
+      - name: ue_total_watch_minutes
+        description: Total watch minutes across users.
+        agg: sum
+        expr: total_watch_minutes
+
+  - name: sm_title_performance
+    description: Semantic model for title performance metrics.
+    model: ref('mart_title_performance')
+    entities:
+      - name: title
+        type: primary
+        expr: title_id
+    dimensions:
+      - name: title_name
+        type: categorical
+        expr: title_name
+    measures:
+      - name: tp_total_sessions
+        description: Total sessions for titles.
+        agg: sum
+        expr: total_sessions
+      - name: tp_total_watch_minutes
+        description: Total watch minutes for titles.
+        agg: sum
+        expr: total_watch_minutes
+      - name: tp_completed_sessions
+        description: Completed sessions for titles.
+        agg: sum
+        expr: completed_sessions
+
+  - name: sm_subscription_health
+    description: Semantic model for subscription health metrics.
+    model: ref('mart_subscription_health')
+    defaults:
+      agg_time_dimension: month
+    dimensions:
+      - name: month
+        type: time
+        type_params:
+          time_granularity: month
+    measures:
+      - name: sh_subscription_starts
+        description: Total subscription starts.
+        agg: sum
+        expr: subscription_starts
+      - name: sh_churns
+        description: Total churn events.
+        agg: sum
+        expr: churns
+
+  - name: sm_revenue_monthly
+    description: Semantic model for monthly revenue metrics.
+    model: ref('mart_revenue_monthly')
+    defaults:
+      agg_time_dimension: revenue_month
+    entities:
+      - name: plan
+        type: primary
+        expr: plan_id
+    dimensions:
+      - name: revenue_month
+        type: time
+        type_params:
+          time_granularity: month
+      - name: plan_id
+        type: categorical
+        expr: plan_id
+    measures:
+      - name: rm_revenue_usd
+        description: Total recognized monthly revenue in USD.
+        agg: sum
+        expr: revenue_usd
+
+  - name: sm_payments
+    description: Semantic model for payment transaction analytics.
+    model: ref('fct_payments')
+    defaults:
+      agg_time_dimension: payment_ts
+    entities:
+      - name: payment
+        type: primary
+        expr: payment_id
+      - name: subscription
+        type: foreign
+        expr: subscription_id
+      - name: user
+        type: foreign
+        expr: user_id
+      - name: plan
+        type: foreign
+        expr: plan_id
+    dimensions:
+      - name: payment_ts
+        type: time
+        type_params:
+          time_granularity: day
+      - name: payment_status
+        type: categorical
+        expr: payment_status
+    measures:
+      - name: pay_payment_count
+        description: Count of distinct payments.
+        agg: count_distinct
+        expr: payment_id
+      - name: pay_net_amount_usd
+        description: Total net payment amount in USD.
+        agg: sum
+        expr: net_amount_usd
+
+  - name: sm_subscription_events
+    description: Semantic model for subscription lifecycle events.
+    model: ref('fct_subscription_events')
+    defaults:
+      agg_time_dimension: subscription_start_at
+    entities:
+      - name: subscription
+        type: primary
+        expr: subscription_id
+      - name: user
+        type: foreign
+        expr: user_id
+      - name: plan
+        type: foreign
+        expr: plan_id
+    dimensions:
+      - name: subscription_start_at
+        type: time
+        type_params:
+          time_granularity: day
+      - name: status
+        type: categorical
+        expr: status
+      - name: plan_changed_flag
+        type: categorical
+        expr: plan_changed_flag
+    measures:
+      - name: se_subscription_event_count
+        description: Count of distinct subscriptions in event records.
+        agg: count_distinct
+        expr: subscription_id
+      - name: se_plan_change_count
+        description: Number of plan change events.
+        agg: sum
+        expr: case when plan_changed_flag then 1 else 0 end
+
+  - name: sm_ad_performance_daily
+    description: Semantic model for daily ad network performance.
+    model: ref('fct_ad_performance_daily')
+    defaults:
+      agg_time_dimension: activity_date
+    dimensions:
+      - name: activity_date
+        type: time
+        type_params:
+          time_granularity: day
+      - name: ad_network
+        type: categorical
+        expr: ad_network
+    measures:
+      - name: ad_impressions
+        description: Distinct ad impressions.
+        agg: sum
+        expr: impressions
+      - name: ad_clicks
+        description: Distinct ad clicks.
+        agg: sum
+        expr: clicks
+
+metrics:
+  # sm_user_engagement metrics
+  - name: ue_active_days
+    description: Total active user days.
+    type: simple
+    label: Active Days
+    type_params:
+      measure: ue_active_days
+
+  - name: ue_total_sessions
+    description: Total playback sessions.
+    type: simple
+    label: Total Sessions
+    type_params:
+      measure: ue_total_sessions
+
+  - name: ue_total_watch_minutes
+    description: Total watch minutes.
+    type: simple
+    label: Total Watch Minutes
+    type_params:
+      measure: ue_total_watch_minutes
+
+  - name: ue_avg_watch_minutes_per_session
+    description: Average watch minutes per session.
+    type: ratio
+    label: Avg Watch Minutes / Session
+    type_params:
+      numerator: ue_total_watch_minutes
+      denominator: ue_total_sessions
+
+  # sm_title_performance metrics
+  - name: tp_total_sessions
+    description: Total sessions by title.
+    type: simple
+    label: Title Total Sessions
+    type_params:
+      measure: tp_total_sessions
+
+  - name: tp_total_watch_minutes
+    description: Total watch minutes by title.
+    type: simple
+    label: Title Total Watch Minutes
+    type_params:
+      measure: tp_total_watch_minutes
+
+  - name: tp_completed_sessions
+    description: Completed sessions by title.
+    type: simple
+    label: Completed Sessions
+    type_params:
+      measure: tp_completed_sessions
+
+  - name: tp_completion_rate
+    description: Completed sessions divided by total sessions.
+    type: ratio
+    label: Completion Rate
+    type_params:
+      numerator: tp_completed_sessions
+      denominator: tp_total_sessions
+
+  # sm_subscription_health metrics
+  - name: sh_subscription_starts
+    description: Total subscription starts.
+    type: simple
+    label: Subscription Starts
+    type_params:
+      measure: sh_subscription_starts
+
+  - name: sh_churns
+    description: Total subscription churn events.
+    type: simple
+    label: Churns
+    type_params:
+      measure: sh_churns
+
+  - name: sh_churn_rate
+    description: Churns divided by subscription starts.
+    type: ratio
+    label: Churn Rate
+    type_params:
+      numerator: sh_churns
+      denominator: sh_subscription_starts
+
+  # sm_revenue_monthly metrics
+  - name: rm_revenue_usd
+    description: Monthly recognized net revenue in USD.
+    type: simple
+    label: Revenue USD
+    type_params:
+      measure: rm_revenue_usd
+
+  # sm_payments metrics
+  - name: pay_payment_count
+    description: Count of distinct payments.
+    type: simple
+    label: Payment Count
+    type_params:
+      measure: pay_payment_count
+
+  - name: pay_net_amount_usd
+    description: Total net payment amount in USD.
+    type: simple
+    label: Payment Net Amount USD
+    type_params:
+      measure: pay_net_amount_usd
+
+  - name: pay_avg_amount_usd
+    description: Average net payment amount per payment.
+    type: ratio
+    label: Avg Payment Amount USD
+    type_params:
+      numerator: pay_net_amount_usd
+      denominator: pay_payment_count
+
+  # sm_subscription_events metrics
+  - name: se_subscription_event_count
+    description: Count of subscription records in lifecycle events.
+    type: simple
+    label: Subscription Event Count
+    type_params:
+      measure: se_subscription_event_count
+
+  - name: se_plan_change_count
+    description: Number of plan change events.
+    type: simple
+    label: Plan Change Count
+    type_params:
+      measure: se_plan_change_count
+
+  - name: se_plan_change_rate
+    description: Plan change events divided by subscription event count.
+    type: ratio
+    label: Plan Change Rate
+    type_params:
+      numerator: se_plan_change_count
+      denominator: se_subscription_event_count
+
+  # sm_ad_performance_daily metrics
+  - name: ad_impressions
+    description: Total ad impressions.
+    type: simple
+    label: Impressions
+    type_params:
+      measure: ad_impressions
+
+  - name: ad_clicks
+    description: Total ad clicks.
+    type: simple
+    label: Clicks
+    type_params:
+      measure: ad_clicks
+
+  - name: ad_ctr
+    description: Click-through rate from clicks and impressions.
+    type: ratio
+    label: Ad CTR
+    type_params:
+      numerator: ad_clicks
+      denominator: ad_impressions
 
 exposures:
   - name: streaming_kpi_dashboard
