@@ -40,6 +40,23 @@ models:
         data_tests:
           - not_null
           - unique
+      - name: user_id
+        description: Associated user id for a profile under a user account.
+        data_tests:
+          - not_null
+      - name: profile_name
+        description: Profile name for a profile under a user account.
+        data_tests:
+          - not_null
+      - name: is_kids_profile
+        description: Indicator for kids profile or not for a profile under a user account.
+        data_type: bool
+        data_tests:
+          - not_null
+      - name: created_at
+        description: Profile creation date for a profile under a user account.
+        data_tests:
+          - not_null
 
   - name: dim_devices
     description: Device dimension keyed by device_id.
