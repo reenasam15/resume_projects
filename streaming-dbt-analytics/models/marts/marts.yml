@@ -38,6 +38,10 @@ models:
         description: Associated user id for a profile under a user account.
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_users')
+                field: user_id
       - name: profile_name
         description: Profile name for a profile under a user account.
       - name: is_kids_profile
@@ -126,6 +130,11 @@ models:
         description: Subscription identifier for the payment.
       - name: user_id
         description: User identifier for the payment.
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_users')
+                field: user_id
       - name: plan_id
         description: Subscription plan identifier for the payment.
       - name: payment_ts
@@ -165,6 +174,10 @@ models:
         description: User identifier for the subscription.
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_users')
+                field: user_id
       - name: plan_id
         description: Plan identifier associated with the subscription.
         data_tests:
@@ -188,6 +201,10 @@ models:
         data_tests:
           - not_null
           - unique
+          - relationships:
+              arguments:
+                to: ref('dim_users')
+                field: user_id
       - name: active_days
         description: Distinct active days for the user.
       - name: total_sessions
