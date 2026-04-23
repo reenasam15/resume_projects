@@ -9,6 +9,28 @@ models:
         data_tests:
           - not_null
           - unique
+      - name: email
+        description: Associated email for a streaming account user.
+      - name: country_code
+        description: Associated country for a streaming account user.
+        data_tests:
+          - not_null
+      - name: region
+        description: Associated region for a streaming account user.
+        data_tests:
+          - not_null
+      - name: account_status
+        description: Account status for a streaming account user.
+        data_tests:
+          - not_null
+      - name: signup_at
+        description: Sign up date/time for a streaming account user.
+        data_tests:
+          - not_null
+      - name: updated_at
+        description: Latest account update date for a streaming account user.
+        data_tests:
+          - not_null
 
   - name: dim_profiles
     description: Profile dimension keyed by profile_id.
