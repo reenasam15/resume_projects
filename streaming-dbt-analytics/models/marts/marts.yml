@@ -13,8 +13,6 @@ models:
         description: Associated email for a streaming account user.
       - name: country_code
         description: Associated country for a streaming account user.
-        constraints:
-          - type: not_null
       - name: region
         description: Associated region for a streaming account user.
       - name: account_status
