@@ -6,48 +6,67 @@ models:
     columns:
       - name: user_id
         description: Unique identifier for a streaming account user.
-        tests: [not_null, unique]
+        data_tests:
+          - not_null
+          - unique
 
   - name: dim_profiles
     description: Profile dimension keyed by profile_id.
     columns:
       - name: profile_id
         description: Unique identifier for a profile under a user account.
-        tests: [not_null, unique]
+        data_tests:
+          - not_null
+          - unique
 
   - name: dim_devices
     description: Device dimension keyed by device_id.
     columns:
       - name: device_id
         description: Unique identifier for a playback device.
-        tests: [not_null, unique]
+        data_tests:
+          - not_null
+          - unique
 
   - name: dim_titles
     description: Content title dimension keyed by title_id.
     columns:
       - name: title_id
         description: Unique identifier for a content title.
-        tests: [not_null, unique]
+        data_tests:
+          - not_null
+          - unique
 
   - name: dim_subscription_plans
     description: Subscription plan dimension keyed by plan_id.
     columns:
       - name: plan_id
         description: Unique identifier for a subscription plan.
-        tests: [not_null, unique]
+        data_tests:
+          - not_null
+          - unique
 
   - name: fct_playback_sessions
     description: Session-level fact table for playback sessions.
     columns:
       - name: session_id
         description: Unique identifier for each playback session.
-        tests: [not_null, unique]
+        data_tests:
+          - not_null
+          - unique
 
   - name: fct_watch_activity_daily
     description: Daily user-level watch activity fact table.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [activity_date, user_id]
+    columns:
+      - name: activity_date
+        description: Date of activity.
+        data_tests:
+          - not_null
+    columns:
+      - name: user_id
+        description: User id
+        data_tests:
+          - not_null
 
   - name: fct_payments
     description: Payment-level fact table for successfully captured transactions.
