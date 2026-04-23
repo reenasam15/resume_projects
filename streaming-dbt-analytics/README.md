@@ -1,9 +1,9 @@
-# Streaming DBT Analytics (DuckDB)
+# Streaming DBT Analytics (DuckDB) - Work In Progress
 
 Portfolio-quality dbt Core project modeling a fictional streaming platform end-to-end: from raw CSV inputs to tested, documented marts for product, finance, and marketing analytics.
 
 ## Business context
-This repository simulates analytics engineering work for a streaming platform with:
+This repository (not yet completed) simulates analytics engineering work for a streaming platform with:
 - user lifecycle + subscription plan changes
 - playback sessions and event-level watch behavior
 - ad impressions/clicks and CTR
