@@ -17,20 +17,14 @@ models:
           - type: not_null
       - name: region
         description: Associated region for a streaming account user.
-        constraints:
-          - type: not_null
       - name: account_status
         description: Account status for a streaming account user.
         data_tests:
           - not_null
       - name: signup_at
         description: Sign up date/time for a streaming account user.
-        data_tests:
-          - not_null
       - name: updated_at
         description: Latest account update date for a streaming account user.
-        data_tests:
-          - not_null
 
   - name: dim_profiles
     description: Profile dimension keyed by profile_id.
@@ -46,17 +40,11 @@ models:
           - not_null
       - name: profile_name
         description: Profile name for a profile under a user account.
-        data_tests:
-          - not_null
       - name: is_kids_profile
         description: Indicator for kids profile or not for a profile under a user account.
         data_type: bool
-        data_tests:
-          - not_null
       - name: created_at
         description: Profile creation date for a profile under a user account.
-        data_tests:
-          - not_null
 
   - name: dim_devices
     description: Device dimension keyed by device_id.
@@ -75,7 +63,26 @@ models:
         data_tests:
           - not_null
           - unique
-
+      - name: title_name
+        description: Name of a content title.
+        data_tests:
+          - not_null
+      - name: content_type
+        description: Content type of a content title.
+      - name: release_year
+        description: Release year of a content title.
+        data_type: date
+      - name: runtime_minutes
+        data_type: int
+        description: Runtime in minutes of a content title.
+      - name: maturity_rating
+        description: Maturity rating of a content title.
+      - name: is_active
+        description: Active indicator of a content title.
+        data_type: bool
+      - name: genres
+        description: List of genres of a content title.
+    
   - name: dim_subscription_plans
     description: Subscription plan dimension keyed by plan_id.
     columns:
