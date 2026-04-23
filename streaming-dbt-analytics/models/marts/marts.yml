@@ -119,6 +119,9 @@ models:
     columns:
       - name: payment_id
         description: Unique payment identifier.
+        data_tests:
+          - not_null
+          - unique
       - name: subscription_id
         description: Subscription identifier for the payment.
       - name: user_id
@@ -137,8 +140,12 @@ models:
     columns:
       - name: activity_date
         description: Activity date at day grain.
+        data_tests:
+          - not_null
       - name: ad_network
         description: Ad network where impression and click activity occurred.
+        data_tests:
+          - not_null
       - name: impressions
         description: Distinct ad impressions for the day/network.
       - name: clicks
@@ -151,10 +158,17 @@ models:
     columns:
       - name: subscription_id
         description: Unique subscription identifier.
+        data_tests:
+          - not_null
+          - unique
       - name: user_id
         description: User identifier for the subscription.
+        data_tests:
+          - not_null
       - name: plan_id
         description: Plan identifier associated with the subscription.
+        data_tests:
+          - not_null
       - name: status
         description: Subscription status at event extraction time.
       - name: subscription_start_at
@@ -171,6 +185,9 @@ models:
     columns:
       - name: user_id
         description: Unique user identifier.
+        data_tests:
+          - not_null
+          - unique
       - name: active_days
         description: Distinct active days for the user.
       - name: total_sessions
@@ -185,6 +202,9 @@ models:
     columns:
       - name: title_id
         description: Unique title identifier.
+        data_tests:
+          - not_null
+          - unique
       - name: title_name
         description: Human-readable title name.
       - name: total_sessions
@@ -200,7 +220,11 @@ models:
     description: Monthly subscription health mart.
     columns:
       - name: month
+        data_type: date
         description: Aggregation month.
+        data_tests:
+          - not_null
+          - unique
       - name: subscription_starts
         description: Number of subscription starts.
       - name: churns
@@ -213,8 +237,12 @@ models:
     columns:
       - name: revenue_month
         description: Revenue aggregation month.
+        data_tests:
+          - not_null
       - name: plan_id
         description: Subscription plan identifier.
+        data_tests:
+          - not_null
       - name: revenue_usd
         description: Total recognized net revenue in USD.
 
